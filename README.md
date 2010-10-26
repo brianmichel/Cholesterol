@@ -20,7 +20,8 @@ Usage
 Additionally, you can use the -h or --help switch to receive the entire help output as such, 
 >Usage: NetworkDestroyer.rb -e endpoint -s speed -p packetloss -d delay
 
->   -v, --version                    Display Version
+>   
+	-v, --version                    Display Version
     -i, --interactive                I'll guide you through setup!
     -p, --packet-loss (0-100)        Packet Loss Percentage
     -e, --endpoint (i.e. 10.0.0.1)   Endpoint You Wish To Slow Up
