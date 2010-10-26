@@ -21,7 +21,7 @@ end
 
 options = {}
 optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: NetworkDestroyer.rb -e endpoint -s speed -p packetloss -d delay"
+  opts.banner = "Usage: Cholesterol.rb -e endpoint -s speed -p packetloss -d delay"
   opts.separator ''
   opts.on('-v', '--version', 'Display Version') do
     puts $VERSION; exit

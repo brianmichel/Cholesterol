@@ -1,4 +1,4 @@
-Network Destroyer Ruby Script
+Cholesterol Ruby Script
 =============================
 
 This is a script that came out of the need to make the iPhone simulator perform as if it were attached to a crappy network. As you can imagine this is much easier to perform on the device, but may not be as convenient. 
@@ -10,7 +10,7 @@ Prerequisites
  
 Usage
 -----
- >example: ruby NetworkDestroyer.rb -e 10.0.0.1 -s 10 -p 57 -d 250
+ >example: ruby Cholesterol.rb -e 10.0.0.1 -s 10 -p 57 -d 250
 
  * -e specifies the endpoint you wish you limit your connection with
  * -s specifies the speed at which you wish to limit your connection
@@ -18,7 +18,7 @@ Usage
  * -d specifies the amount of delay you wish to occur on the connection
 
 Additionally, you can use the -h or --help switch to receive the entire help output as such, 
->Usage: NetworkDestroyer.rb -e endpoint -s speed -p packetloss -d delay
+>Usage: Cholesterol.rb -e endpoint -s speed -p packetloss -d delay
 
 >   
 	-v, --version                    Display Version
