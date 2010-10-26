@@ -5,8 +5,8 @@ This is a script that came out of the need to make the iPhone simulator perform 
 
 Prerequisites
 -------------
- *OS X 10.6+ (I've only tested this on OS X, but should work with anything with ipfw isntalled)
- *Ruby (duh)
+ * OS X 10.6+ (I've only tested this on OS X, but should work with anything with ipfw installed)
+ * Ruby (duh)
  
 Usage
 -----
