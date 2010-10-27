@@ -5,7 +5,7 @@
 #
 require "rubygems"
 require "optparse"
-$VERSION = "0.0.1"
+$VERSION = "0.0.2"
 
 def flush_rules
    puts %x[sudo ipfw -q flush]
@@ -13,10 +13,19 @@ def flush_rules
 end
 
 def create_rules(endpoint, delay, packetloss, connectionspeed)
-  puts %x[sudo ipfw add pipe 1 ip from any to #{endpoint}]
-  puts %x[sudo ipfw add pipe 2 ip from #{endpoint} to any]
-  puts %x[sudo ipfw pipe 1 config delay #{delay}ms bw #{connectionspeed}MBit/s plr #{packetloss}]
-  puts %x[sudo ipfw pipe 2 config delay #{delay}ms bw #{connectionspeed}MBit/s plr #{packetloss}]
+  endpointArray = %x[dig #{endpoint} +short]
+  splitArray = endpointArray.split("\n")
+  if splitArray.count > 1 #say if our host resolves to more than one IP
+    splitArray.delete_at(0)
+  end
+  count = 1
+  splitArray.each do |_endpoint|
+    puts %x[sudo ipfw add pipe #{(count * 2) - 1} ip from any to #{_endpoint}]
+    puts %x[sudo ipfw add pipe #{(count * 2)} ip from #{_endpoint} to any]
+    puts %x[sudo ipfw pipe #{(count * 2) - 1} config delay #{delay}ms bw #{connectionspeed}MBit/s plr #{packetloss}]
+    puts %x[sudo ipfw pipe #{(count * 2)} config delay #{delay}ms bw #{connectionspeed}MBit/s plr #{packetloss}]
+    count += 1
+  end
 end
 
 options = {}
@@ -52,7 +61,7 @@ end
 
 optparse.parse!(ARGV)
 
-unless ARGV.length >= 4 || ARGV[0] == "-i" || ARGV[0] == "--interactive"
+if ARGV.length >= 4 || ARGV[0] == "-i" || ARGV[0] == "--interactive"
   puts optparse; exit
 end
 
