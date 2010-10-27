@@ -37,3 +37,8 @@ Planned Features
 Contributing
 ------------
  Feel free to go ahead and fork, change, modify this code as you see fit. I'll go ahead and add an MIT license in here soon enough.
+
+Changes
+-------
+
+* 10/27/2010 - Added in hostname resolution and rule setting for all resolved IPs
