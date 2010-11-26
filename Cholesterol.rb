@@ -9,23 +9,38 @@ $VERSION = "0.0.2"
 
 def flush_rules
    puts %x[sudo ipfw -q flush]
-   print "Okay, you should be good now!"
+   puts "Okay, you should be good now!"
 end
 
 def create_rules(endpoint, delay, packetloss, connectionspeed)
-  endpointArray = %x[dig #{endpoint} +short]
-  splitArray = endpointArray.split("\n")
-  if splitArray.count > 1 #say if our host resolves to more than one IP
-    splitArray.delete_at(0)
+  if endpoint == nil
+    endpoint = "any"
+    puts "****Oops, no endpoint given, clogging everything.****"
   end
-  count = 1
-  splitArray.each do |_endpoint|
-    puts %x[sudo ipfw add pipe #{(count * 2) - 1} ip from any to #{_endpoint}]
-    puts %x[sudo ipfw add pipe #{(count * 2)} ip from #{_endpoint} to any]
-    puts %x[sudo ipfw pipe #{(count * 2) - 1} config delay #{delay}ms bw #{connectionspeed}MBit/s plr #{packetloss}]
-    puts %x[sudo ipfw pipe #{(count * 2)} config delay #{delay}ms bw #{connectionspeed}MBit/s plr #{packetloss}]
-    count += 1
+  
+  puts "Stuffing the tubes..."
+  if endpoint != "any"
+    endpointArray = %x[dig #{endpoint} +short]
+    splitArray = endpointArray.split("\n")
+    if splitArray.count > 1 #say if our host resolves to more than one IP
+      splitArray.delete_at(0)
+    end
+    count = 1
+    
+    splitArray.each do |_endpoint|
+      puts %x[sudo ipfw add pipe #{(count * 2) - 1} ip from any to #{_endpoint}]
+      puts %x[sudo ipfw add pipe #{(count * 2)} ip from #{_endpoint} to any]
+      puts %x[sudo ipfw pipe #{(count * 2) - 1} config delay #{delay}ms bw #{connectionspeed}MBit/s plr #{packetloss}]
+      puts %x[sudo ipfw pipe #{(count * 2)} config delay #{delay}ms bw #{connectionspeed}MBit/s plr #{packetloss}]
+      count += 1
+    end
+  else #if we do not pass any endpoint into the function, it only needs to create two rules to block everything.
+    puts %x[sudo ipfw add pipe 1 ip from any to #{endpoint}]
+    puts %x[sudo ipfw add pipe 2 ip from #{endpoint} to any]
+    puts %x[sudo ipfw pipe 1 config delay #{delay}ms bw #{connectionspeed}MBit/s plr #{packetloss}]
+    puts %x[sudo ipfw pipe 2 config delay #{delay}ms bw #{connectionspeed}MBit/s plr #{packetloss}]
   end
+  puts "Tubes stuffed!"
 end
 
 options = {}
